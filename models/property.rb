@@ -50,6 +50,15 @@ class Property
     db.close()
   end
 
+  def Property.all()
+    db = PG.connect({dbname: 'property', host: 'localhost'})
+    sql = "SELECT * FROM properties"
+    db.prepare("all", sql)
+    result = db.exec_prepared("all")
+    db.close()
+    return result.map { |property| Property.new(property) }
+  end
+
   def Property.find(id)
     db = PG.connect({dbname: 'property', host: 'localhost'})
     sql = "SELECT * FROM properties WHERE id = $1"
